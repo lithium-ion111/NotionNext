@@ -15,7 +15,7 @@ const BLOG = {
 
   HOME_BANNER: process.env.NEXT_PUBLIC_HOME_BANNER || false,
   AUTHOR: 'ホワサバ勉強会保管庫',
-  BIO: '最新の攻略情報をまとめています。',
+  BIO: '勉強会の情報を趣味でまとめています。',
   AVATAR: ' ', 
   LINK: process.env.NEXT_PUBLIC_LINK || 'https://notion-next-coral.vercel.app',
   KEYWORDS: process.env.NEXT_PUBLIC_KEYWORD || 'ホワイトアウトサバイバル, ホワサバ, 攻略, 勉強会',
@@ -73,6 +73,7 @@ const BLOG = {
   ...require('./conf/techgrow.config'),
 
   LAYOUT_SIDEBAR_REVERSE: process.env.NEXT_PUBLIC_LAYOUT_SIDEBAR_REVERSE || false,
+  LAYOUT_LANDING_ENABLE: process.env.NEXT_PUBLIC_LAYOUT_LANDING_ENABLE || false,
   GREETING_WORDS: process.env.NEXT_PUBLIC_GREETING_WORDS || 'ホワサバ勉強会保管庫です．誰でも情報を追加できます．',
   UUID_REDIRECT: process.env.UUID_REDIRECT || false
 }
