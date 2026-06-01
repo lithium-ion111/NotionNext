@@ -1,9 +1,9 @@
 import { BLOG } from '@/blog.config'
 import algoliasearch from 'algoliasearch'
-import { getDataFromNotion } from '@/lib/notion/getNotionData' 
+import { getAllPosts } from '@/lib/notion' // ← ここをシンプルに変更しました
 
 /**
- * Algolia同期用API (v4 最新安定版)
+ * Algolia同期用API (v4 最新版対応)
  */
 export default async function handler(req, res) {
   if (BLOG.ALGOLIA_APP_ID && BLOG.ALGOLIA_ADMIN_APP_KEY && BLOG.ALGOLIA_INDEX_NAME) {
@@ -11,11 +11,11 @@ export default async function handler(req, res) {
       const client = algoliasearch(BLOG.ALGOLIA_APP_ID, BLOG.ALGOLIA_ADMIN_APP_KEY)
       const index = client.initIndex(BLOG.ALGOLIA_INDEX_NAME)
 
-      // v4で最も安定しているデータ取得メソッドを使用
-      const allPosts = await getDataFromNotion({ from: 'api-algolia' })
+      // v4系で最も標準的な記事取得関数を使用
+      const allPosts = await getAllPosts({ from: 'api-algolia' })
 
       if (!allPosts || allPosts.length === 0) {
-        return res.status(500).json({ message: 'Notion data is empty' })
+        return res.status(500).json({ message: 'Notionから記事を取得できませんでした。' })
       }
 
       const records = allPosts.map(post => ({
