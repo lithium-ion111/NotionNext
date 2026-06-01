@@ -1,10 +1,10 @@
 import { BLOG } from '../../blog.config'
 import algoliasearch from 'algoliasearch'
-// 画像(17.41.46.jpg)の階層に合わせた正しいインポートパス
-import { getAllPosts } from '../../lib/db/getNotionData'
+// 画像のツリーに基づいた「ルート直下のdbフォルダ」への正しいパス
+import { getAllPosts } from '../../db/notion/getNotionData'
 
 /**
- * Algolia同期用API (v4 最終ディレクトリ整合版)
+ * Algolia同期用API (v4 ディレクトリ構造最終回答版)
  */
 export default async function handler(req, res) {
   if (BLOG.ALGOLIA_APP_ID && BLOG.ALGOLIA_ADMIN_APP_KEY && BLOG.ALGOLIA_INDEX_NAME) {
@@ -12,7 +12,7 @@ export default async function handler(req, res) {
       const client = algoliasearch(BLOG.ALGOLIA_APP_ID, BLOG.ALGOLIA_ADMIN_APP_KEY)
       const index = client.initIndex(BLOG.ALGOLIA_INDEX_NAME)
 
-      // lib/db/getNotionData からデータを取得
+      // 記事データを取得
       const allPosts = await getAllPosts({ from: 'api-algolia' })
 
       if (!allPosts || allPosts.length === 0) {
