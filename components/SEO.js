@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 
 /**
- * 页面的Head头，有用于SEO
+ * ページのHeadタグ、SEO用
  * @param {*} param0
  * @returns
  */
@@ -22,17 +22,15 @@ const SEO = props => {
   const webFontUrl = siteConfig('FONT_URL')
 
   useEffect(() => {
-    // 使用WebFontLoader字体加载
+    // WebFontLoaderを使用してフォントをロード
     loadExternalResource(
       'https://cdnjs.cloudflare.com/ajax/libs/webfont/1.6.28/webfontloader.js',
       'js'
     ).then(url => {
       const WebFont = window?.WebFont
       if (WebFont) {
-        // console.log('LoadWebFont', webFontUrl)
         WebFont.load({
           custom: {
-            // families: ['"LXGW WenKai"'],
             urls: webFontUrl
           }
         })
@@ -40,7 +38,7 @@ const SEO = props => {
     })
   }, [])
 
-  // SEO关键词
+  // SEOキーワード
   const KEYWORDS = siteConfig('KEYWORDS')
   let keywords = meta?.tags || KEYWORDS
   if (post?.tags && post?.tags?.length > 0) {
@@ -54,8 +52,8 @@ const SEO = props => {
   const title = meta?.title || TITLE
   const description = meta?.description || `${siteInfo?.description}`
   const type = meta?.type || 'website'
-  const lang = siteConfig('LANG').replace('-', '_') // Facebook OpenGraph 要 zh_CN 這樣的格式才抓得到語言
-  const category = meta?.category || KEYWORDS // section 主要是像是 category 這樣的分類，Facebook 用這個來抓連結的分類
+  const lang = siteConfig('LANG').replace('-', '_')
+  const category = meta?.category || KEYWORDS
   const favicon = siteConfig('BLOG_FAVICON')
   const BACKGROUND_DARK = siteConfig('BACKGROUND_DARK', '', NOTION_CONFIG)
 
@@ -115,7 +113,7 @@ const SEO = props => {
       <meta name='apple-mobile-web-app-status-bar-style' content='default' />
       <meta name='apple-mobile-web-app-title' content={title} />
 
-      {/* 搜索引擎验证 */}
+      {/* 検索エンジン検証 */}
       {SEO_GOOGLE_SITE_VERIFICATION && (
         <meta
           name='google-site-verification'
@@ -129,17 +127,17 @@ const SEO = props => {
         />
       )}
 
-      {/* 基础SEO元数据 */}
+      {/* 基本SEOメタデータ */}
       <meta name='keywords' content={keywords} />
       <meta name='description' content={description} />
       <meta name='author' content={AUTHOR} />
       <meta name='generator' content='NotionNext' />
 
-      {/* 语言和地区 */}
+      {/* 言語と地域 */}
       <meta httpEquiv='content-language' content={siteConfig('LANG')} />
-      <meta name='geo.region' content={siteConfig('GEO_REGION', 'CN')} />
-      <meta name='geo.country' content={siteConfig('GEO_COUNTRY', 'CN')} />
-      {/* Open Graph 元数据 */}
+      <meta name='geo.region' content={siteConfig('GEO_REGION', 'JP')} />
+      <meta name='geo.country' content={siteConfig('GEO_COUNTRY', 'JP')} />
+      {/* Open Graph */}
       <meta property='og:locale' content={lang} />
       <meta property='og:title' content={title} />
       <meta property='og:description' content={description} />
@@ -151,7 +149,7 @@ const SEO = props => {
       <meta property='og:site_name' content={siteConfig('TITLE')} />
       <meta property='og:type' content={type} />
 
-      {/* Twitter Card 元数据 */}
+      {/* Twitter Card */}
       <meta name='twitter:card' content='summary_large_image' />
       <meta name='twitter:site' content={siteConfig('TWITTER_SITE', '@NotionNext')} />
       <meta name='twitter:creator' content={siteConfig('TWITTER_CREATOR', '@NotionNext')} />
@@ -181,7 +179,7 @@ const SEO = props => {
       {ANALYTICS_BUSUANZI_ENABLE && (
         <meta name='referrer' content='no-referrer-when-downgrade' />
       )}
-      {/* 文章特定元数据 */}
+      {/* 記事固有メタデータ */}
       {meta?.type === 'Post' && (
         <>
           <meta property='article:published_time' content={meta.publishDay} />
@@ -193,7 +191,7 @@ const SEO = props => {
         </>
       )}
 
-      {/* 结构化数据 */}
+      {/* 構造化データ */}
       <script
         type='application/ld+json'
         dangerouslySetInnerHTML={{
@@ -201,10 +199,7 @@ const SEO = props => {
         }}
       />
 
-      {/* DNS预取和预连接 */}
       <link rel='dns-prefetch' href='//fonts.googleapis.com' />
-      <link rel='dns-prefetch' href='//www.google-analytics.com' />
-      <link rel='dns-prefetch' href='//www.googletagmanager.com' />
       <link rel='preconnect' href='https://fonts.gstatic.com' crossOrigin='anonymous' />
 
       {children}
@@ -213,13 +208,7 @@ const SEO = props => {
 }
 
 /**
- * 生成结构化数据
- * @param {*} meta
- * @param {*} siteInfo
- * @param {*} url
- * @param {*} image
- * @param {*} author
- * @returns
+ * 構造化データの生成
  */
 const generateStructuredData = (meta, siteInfo, url, image, author) => {
   const baseData = {
@@ -242,7 +231,6 @@ const generateStructuredData = (meta, siteInfo, url, image, author) => {
     }
   }
 
-  // 如果是文章页面，添加文章结构化数据
   if (meta?.type === 'Post') {
     return {
       '@context': 'https://schema.org',
@@ -278,9 +266,7 @@ const generateStructuredData = (meta, siteInfo, url, image, author) => {
 }
 
 /**
- * 获取SEO信息
- * @param {*} props
- * @param {*} router
+ * SEO情報の取得
  */
 const getSEOMeta = (props, router, locale) => {
   const { post, siteInfo, tag, category, page } = props
@@ -290,8 +276,13 @@ const getSEOMeta = (props, router, locale) => {
   switch (router.route) {
     case '/':
       return {
-        title: `${siteInfo?.title} | ${siteInfo?.description}`,
-        description: `${siteInfo?.description}`,
+        // 副説明が中国語のデフォルト文言にならないよう修正
+        title: siteInfo?.description && !siteInfo.description.includes('NotionNext') 
+               ? `${siteInfo?.title} | ${siteInfo?.description}` 
+               : `${siteInfo?.title}`,
+        description: siteInfo?.description && !siteInfo.description.includes('NotionNext')
+               ? `${siteInfo?.description}`
+               : `${siteInfo?.title}`,
         image: `${siteInfo?.pageCover}`,
         slug: '',
         type: 'website'
@@ -313,13 +304,6 @@ const getSEOMeta = (props, router, locale) => {
         type: 'website'
       }
     case '/category/[category]':
-      return {
-        title: `${category} | ${locale.COMMON.CATEGORY} | ${siteInfo?.title}`,
-        description: `${siteInfo?.description}`,
-        slug: 'category/' + category,
-        image: `${siteInfo?.pageCover}`,
-        type: 'website'
-      }
     case '/category/[category]/page/[page]':
       return {
         title: `${category} | ${locale.COMMON.CATEGORY} | ${siteInfo?.title}`,
@@ -338,18 +322,11 @@ const getSEOMeta = (props, router, locale) => {
         type: 'website'
       }
     case '/search':
-      return {
-        title: `${keyword || ''}${keyword ? ' | ' : ''}${locale.NAV.SEARCH} | ${siteInfo?.title}`,
-        description: `${siteInfo?.description}`,
-        image: `${siteInfo?.pageCover}`,
-        slug: 'search',
-        type: 'website'
-      }
     case '/search/[keyword]':
     case '/search/[keyword]/page/[page]':
       return {
         title: `${keyword || ''}${keyword ? ' | ' : ''}${locale.NAV.SEARCH} | ${siteInfo?.title}`,
-        description: TITLE,
+        description: `${siteInfo?.description || TITLE}`,
         image: `${siteInfo?.pageCover}`,
         slug: 'search/' + (keyword || ''),
         type: 'website'
@@ -379,7 +356,7 @@ const getSEOMeta = (props, router, locale) => {
       return {
         title: post
           ? `${post?.title} | ${siteInfo?.title}`
-          : `${siteInfo?.title} | loading`,
+          : `${siteInfo?.title}`,
         description: post?.summary,
         type: post?.type,
         slug: post?.slug,
