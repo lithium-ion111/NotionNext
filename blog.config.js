@@ -35,7 +35,8 @@ const BLOG = {
   HEO_HERO_TITLE_3: 'WOS STUDY GROUP',
   HEO_HERO_TITLE_4: '最新の攻略まとめ',
   HEO_HERO_TITLE_5: ' ', // 中国語が出てくる場合はここをスペースにする
-  
+  // アイコン（左側のNマーク）を消す、または自分の画像にする
+  HEO_HERO_TITLE_LINK: 'https://notion-next-coral.vercel.app',
   // スマホで押しやすい巨大カテゴリボタン（slugは自分のカテゴリ名に合わせてね）
   HEO_HERO_CATEGORY_1: { title: 'ショップ一覧', url: '/category/ショップ' },
   HEO_HERO_CATEGORY_2: { title: '専門家', url: '/category/専門家' },
