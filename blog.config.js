@@ -39,12 +39,11 @@ const BLOG = {
   HEO_HERO_CATEGORY_1: { title: 'ショップ一覧', url: '/category/ショップ' },
   HEO_HERO_CATEGORY_2: { title: '専門家', url: '/category/専門家' },
   HEO_MENU_SEARCH: true,
-
   // Algolia設定
   ALGOLIA_APP_ID: process.env.NEXT_PUBLIC_ALGOLIA_APP_ID || '',
   ALGOLIA_API_KEY: process.env.NEXT_PUBLIC_ALGOLIA_API_KEY || '',
   ALGOLIA_INDEX_NAME: process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME || '',
-
+  ALGOLIA_ADMIN_APP_KEY: process.env.ALGOLIA_ADMIN_APP_KEY || '',
   ENABLE_RSS: process.env.NEXT_PUBLIC_ENABLE_RSS || false,
 
   // 其它复杂配置
