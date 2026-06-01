@@ -33,6 +33,8 @@ const BLOG = {
   HEO_HERO_TITLE_1: 'ホワサバ攻略',
   HEO_HERO_TITLE_2: '知りたい情報を探す',
   HEO_HERO_TITLE_3: 'WOS STUDY GROUP',
+  HEO_HERO_TITLE_4: '最新の攻略まとめ',
+  HEO_HERO_TITLE_5: ' ', // 中国語が出てくる場合はここをスペースにする
   
   // スマホで押しやすい巨大カテゴリボタン（slugは自分のカテゴリ名に合わせてね）
   HEO_HERO_CATEGORY_1: { title: 'ショップ一覧', url: '/category/ショップ' },
