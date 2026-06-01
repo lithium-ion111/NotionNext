@@ -1,10 +1,10 @@
 import { BLOG } from '../../blog.config'
 import algoliasearch from 'algoliasearch'
-// エイリアスを使わず、直接ファイルパスを指定して読み込みます
-import { getAllPosts } from '../../lib/notion/getNotionData'
+// 最新版のファイル構成に合わせた物理パス
+import { getAllPosts } from '../../db/getNotionData'
 
 /**
- * Algolia同期用API (v4 最終解決版)
+ * Algolia同期用API (v4 構造確定版)
  */
 export default async function handler(req, res) {
   if (BLOG.ALGOLIA_APP_ID && BLOG.ALGOLIA_ADMIN_APP_KEY && BLOG.ALGOLIA_INDEX_NAME) {
@@ -12,11 +12,11 @@ export default async function handler(req, res) {
       const client = algoliasearch(BLOG.ALGOLIA_APP_ID, BLOG.ALGOLIA_ADMIN_APP_KEY)
       const index = client.initIndex(BLOG.ALGOLIA_INDEX_NAME)
 
-      // 記事データを取得
+      // dbフォルダのgetAllPostsを呼び出す
       const allPosts = await getAllPosts({ from: 'api-algolia' })
 
       if (!allPosts || allPosts.length === 0) {
-        return res.status(500).json({ message: 'Notion data empty' })
+        return res.status(500).json({ message: 'Notion data is empty' })
       }
 
       const records = allPosts.map(post => ({
@@ -35,6 +35,6 @@ export default async function handler(req, res) {
       res.status(500).json({ message: 'error', error: error.message })
     }
   } else {
-    res.status(404).json({ message: 'Algolia configuration missing' })
+    res.status(404).json({ message: 'Algolia config missing' })
   }
 }
