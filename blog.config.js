@@ -27,6 +27,18 @@ const BLOG = {
   BEI_AN_GONGAN: process.env.NEXT_PUBLIC_BEI_AN_GONGAN || '', // 公安备案号，例如 '浙公网安备3xxxxxxxx8号'
   // HEO主題固有設定：記事ページでトップメニューを表示するかどうか
   HEO_MENU_DISPLAY: process.env.NEXT_PUBLIC_HEO_MENU_DISPLAY || true,
+  // HEO主題の設定を上書き
+  HEO_HERO_ENABLE: true, // ヒーローセクションを表示
+  HEO_HERO_TITLE_1: 'ホワサバ攻略',
+  HEO_HERO_TITLE_2: '知りたい情報を探す',
+  HEO_HERO_TITLE_3: 'WOS STUDY GROUP',
+  
+  // スマホで押しやすい巨大カテゴリボタン（slugは自分のカテゴリ名に合わせてね）
+  HEO_HERO_CATEGORY_1: { title: 'ショップ一覧', url: '/category/ショップ' },
+  HEO_HERO_CATEGORY_2: { title: '専門家', url: '/category/専門家' },
+  
+  // 検索窓を最初から開いておくイメージの設定
+  HEO_MENU_SEARCH: true,
   // RSS订阅
   ENABLE_RSS: process.env.NEXT_PUBLIC_ENABLE_RSS || false, // 是否开启RSS订阅功能
 
