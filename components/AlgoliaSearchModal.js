@@ -6,7 +6,6 @@ import { Fragment, useEffect, useRef, useState, useImperativeHandle } from 'reac
 import { useHotkeys } from 'react-hotkeys-hook'
 import { throttle } from 'lodash'
 import SmartLink from '@/components/SmartLink'
-import { replaceSearchResult } from '@/lib/utils'
 
 /**
  * Algoliaを使用した検索モーダル
@@ -143,22 +142,11 @@ export default function AlgoliaSearchModal({ cRef }) {
       setTotalHit(nbHits)
       setSearchResults(hits)
       setIsLoading(false)
-      const doms = document
-        .getElementById('search-wrapper')
-        .getElementsByClassName('replace')
-
-      setTimeout(() => {
-        replaceSearchResult({
-          doms,
-          search: query,
-          target: {
-            element: 'span',
-            className: 'font-bold border-b border-dashed'
-          }
-        })
-      }, 200)
+      
+      // replaceSearchResult 呼び出し箇所を削除しました
     } catch (error) {
       console.error('Algolia search error:', error)
+      setIsLoading(false)
     }
   }
 
