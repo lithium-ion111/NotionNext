@@ -7,117 +7,89 @@ import { useEffect } from 'react'
 
 const SEO = props => {
   const { children, siteInfo, post, NOTION_CONFIG } = props
-  const PATH = siteConfig('PATH')
-  const LINK = siteConfig('LINK')
-  const SUB_PATH = siteConfig('SUB_PATH', '')
-  let url = PATH?.length ? `${LINK}/${SUB_PATH}` : LINK
-  let image
   const router = useRouter()
-  const meta = getSEOMeta(props, router, useGlobal()?.locale)
+  const locale = useGlobal()?.locale
+  
+  // --- 基本設定の読み込み ---
+  const TITLE = siteConfig('TITLE')
+  const AUTHOR = siteConfig('AUTHOR')
+  const BLOG_FAVICON = siteConfig('BLOG_FAVICON')
+  const BACKGROUND_DARK = siteConfig('BACKGROUND_DARK', '', NOTION_CONFIG)
   const webFontUrl = siteConfig('FONT_URL')
 
+  // --- 中国語のデフォルト文言を強制的に日本語へ上書き ---
+  const defaultDesc = 'ホワサバ勉強会の備忘録ブログです' // ←ここを好きな説明文に変えてください
+  let description = siteInfo?.description
+  if (!description || description.includes('NotionNext')) {
+    description = defaultDesc
+  }
+
+  // --- メタデータの取得 ---
+  const meta = getSEOMeta(props, router, locale)
+  const title = meta?.title || TITLE
+  const pageDescription = meta?.description || description
+  
   useEffect(() => {
     loadExternalResource(
       'https://cdnjs.cloudflare.com/ajax/libs/webfont/1.6.28/webfontloader.js',
       'js'
     ).then(() => {
-      const WebFont = window?.WebFont
-      if (WebFont) {
-        WebFont.load({
-          custom: { urls: webFontUrl }
-        })
+      if (window?.WebFont) {
+        window.WebFont.load({ custom: { urls: webFontUrl } })
       }
     })
   }, [webFontUrl])
 
-  const KEYWORDS = siteConfig('KEYWORDS')
-  let keywords = meta?.tags || KEYWORDS
-  if (post?.tags && post?.tags?.length > 0) {
-    keywords = post?.tags?.join(',')
-  }
-  if (meta) {
-    url = `${url}/${meta.slug}`
-    image = meta.image || '/bg_image.jpg'
-  }
-  const TITLE = siteConfig('TITLE')
-  const title = meta?.title || TITLE
-  const description = meta?.description || `${siteInfo?.description}`
-  const type = meta?.type || 'website'
-  const lang = siteConfig('LANG').replace('-', '_')
-  const favicon = siteConfig('BLOG_FAVICON')
-  const BACKGROUND_DARK = siteConfig('BACKGROUND_DARK', '', NOTION_CONFIG)
-  const BLOG_FAVICON = siteConfig('BLOG_FAVICON', null, NOTION_CONFIG)
-  const AUTHOR = siteConfig('AUTHOR')
-
   return (
     <Head>
-      <link rel='icon' href={favicon} />
-      <title>{title}</title>
-      <meta name='theme-color' content={BACKGROUND_DARK} />
-      <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0' />
-      <meta name='description' content={description} />
-      <meta name='keywords' content={keywords} />
-      <meta name='author' content={AUTHOR} />
-      <meta name='generator' content='NotionNext' />
-      <meta property='og:title' content={title} />
-      <meta property='og:description' content={description} />
-      <meta property='og:url' content={url} />
-      <meta property='og:image' content={image} />
-      <meta property='og:type' content={type} />
-      <meta name='twitter:card' content='summary_large_image' />
-      <meta name='twitter:title' content={title} />
-      <meta name='twitter:description' content={description} />
-      <meta name='twitter:image' content={image} />
       <link rel='icon' href={BLOG_FAVICON} />
+      <title>{title}</title>
+      <meta name='description' content={pageDescription} />
+      <meta name='keywords' content={meta?.tags || siteConfig('KEYWORDS')} />
+      <meta name='author' content={AUTHOR} />
+      <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+      <meta property='og:title' content={title} />
+      <meta property='og:description' content={pageDescription} />
+      <meta property='og:type' content={meta?.type || 'website'} />
+      <meta name='twitter:card' content='summary_large_image' />
       {children}
     </Head>
   )
 }
 
+/**
+ * SEO情報の組み立て
+ */
 const getSEOMeta = (props, router, locale) => {
-  const { post, siteInfo, tag, category, page } = props
+  const { post, siteInfo } = props
   const keyword = router?.query?.s
-  const TITLE = siteConfig('TITLE')
 
   switch (router.route) {
     case '/':
       return {
-        title: `${siteInfo?.title}`, // 説明文をカット
-        description: `${siteInfo?.description || siteInfo?.title}`,
-        image: `${siteInfo?.pageCover}`,
+        title: `${siteInfo?.title}`, // タイトルのみにする
+        description: siteInfo?.description?.includes('NotionNext') ? siteInfo?.title : siteInfo?.description,
         slug: '',
         type: 'website'
       }
     case '/archive':
       return {
         title: `${locale?.NAV?.ARCHIVE} | ${siteInfo?.title}`,
-        description: `${siteInfo?.description}`,
-        image: `${siteInfo?.pageCover}`,
         slug: 'archive',
         type: 'website'
       }
     case '/search':
       return {
         title: `${keyword || ''}${keyword ? ' | ' : ''}${locale?.NAV?.SEARCH} | ${siteInfo?.title}`,
-        description: `${siteInfo?.description || TITLE}`,
-        image: `${siteInfo?.pageCover}`,
         slug: 'search',
         type: 'website'
-      }
-    case '/404':
-      return {
-        title: `${siteInfo?.title} | ${locale?.NAV?.PAGE_NOT_FOUND}`,
-        image: `${siteInfo?.pageCover}`
       }
     default:
       return {
         title: post ? `${post?.title} | ${siteInfo?.title}` : `${siteInfo?.title}`,
-        description: post?.summary || siteInfo?.description,
+        description: post?.summary,
         type: post?.type || 'website',
-        slug: post?.slug || '',
-        image: post?.pageCoverThumbnail || `${siteInfo?.pageCover}`,
-        category: post?.category?.[0],
-        tags: post?.tags
+        slug: post?.slug || ''
       }
   }
 }
