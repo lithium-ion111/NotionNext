@@ -1,43 +1,44 @@
 import { BLOG } from '@/blog.config'
 import algoliasearch from 'algoliasearch'
-import { getPostBlocks } from '@/lib/notion' // 読み込み先を標準的なものに変更
-import { getAllPosts } from '@/lib/notion/getNotionData' // 汎用的な関数に変更
+import { getAllPosts } from '@/db/getNotionData' // lib/notion ではなく db から読み込む
 
 /**
- * Algolia同期用API
+ * Algolia同期用API (v4対応版)
  */
 export default async function handler(req, res) {
+  // 必要な設定があるか確認
   if (BLOG.ALGOLIA_APP_ID && BLOG.ALGOLIA_ADMIN_APP_KEY && BLOG.ALGOLIA_INDEX_NAME) {
     try {
       const client = algoliasearch(BLOG.ALGOLIA_APP_ID, BLOG.ALGOLIA_ADMIN_APP_KEY)
       const index = client.initIndex(BLOG.ALGOLIA_INDEX_NAME)
 
-      // Notionから全記事を取得
+      // 最新の db モジュールから記事を取得
       const allPosts = await getAllPosts({ from: 'api-algolia' })
 
-      if (!allPosts) {
-        return res.status(500).json({ message: 'No posts found in Notion' })
+      if (!allPosts || allPosts.length === 0) {
+        return res.status(500).json({ message: 'Notionから記事を取得できませんでした。IDや公開設定を確認してください。' })
       }
 
-      // Algolia形式に変換
+      // Algolia用のデータ形式に整える
       const records = allPosts.map(post => ({
         objectID: post.id,
         title: post.title || '',
         slug: post.slug || '',
-        date: post.date?.start_date || post.lastEditedTime,
+        date: post.publishDay || post.lastEditedDay,
         category: post.category || [],
         tags: post.tags || [],
         summary: post.summary || ''
       }))
 
-      // Algoliaへ保存
+      // Algoliaへ保存（既存データを上書き）
       await index.saveObjects(records)
+      
       res.status(200).json({ message: 'success', count: records.length })
     } catch (error) {
-      console.error('Algolia Error:', error)
+      console.error('Algolia Sync Error:', error)
       res.status(500).json({ message: 'error', error: error.message })
     }
   } else {
-    res.status(404).json({ message: 'Algolia config not found' })
+    res.status(404).json({ message: 'Algoliaの設定(AppID, AdminKey, IndexName)が不足しています。' })
   }
 }
