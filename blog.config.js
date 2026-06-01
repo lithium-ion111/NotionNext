@@ -2,9 +2,7 @@
 
 const BLOG = {
   API_BASE_URL: process.env.API_BASE_URL || 'https://www.notion.so/api/v3',
-  NOTION_PAGE_ID:
-    process.env.NOTION_PAGE_ID ||
-    '02ab3b8678004aa69e9e415905ef32a5,en:7c1d570661754c8fbc568e00a01fd70e',
+  NOTION_PAGE_ID: process.env.NOTION_PAGE_ID || '3721e1f18e4880b98ea7c74f67aa9ab8',
   THEME: process.env.NEXT_PUBLIC_THEME || 'heo', 
   LANG: process.env.NEXT_PUBLIC_LANG || 'ja-JP',
   SINCE: process.env.NEXT_PUBLIC_SINCE || 2026,
