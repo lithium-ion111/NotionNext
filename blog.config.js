@@ -36,7 +36,8 @@ const BLOG = {
   // スマホで押しやすい巨大カテゴリボタン（slugは自分のカテゴリ名に合わせてね）
   HEO_HERO_CATEGORY_1: { title: 'ショップ一覧', url: '/category/ショップ' },
   HEO_HERO_CATEGORY_2: { title: '専門家', url: '/category/専門家' },
-  
+  HEO_POST_LIST_COVER: true, // 記事一覧にサムネイル画像を表示
+  HEO_POST_LIST_SUMMARY: true, // 記事一覧に要約を表示
   // 検索窓を最初から開いておくイメージの設定
   HEO_MENU_SEARCH: true,
   // RSS订阅
