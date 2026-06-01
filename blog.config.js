@@ -43,7 +43,10 @@ const BLOG = {
   HEO_MENU_SEARCH: true,
   // RSS订阅
   ENABLE_RSS: process.env.NEXT_PUBLIC_ENABLE_RSS || false, // 是否开启RSS订阅功能
-
+  // Algolia検索を有効にする
+  ALGOLIA_APP_ID: process.env.NEXT_PUBLIC_ALGOLIA_APP_ID || '',
+  ALGOLIA_API_KEY: process.env.NEXT_PUBLIC_ALGOLIA_API_KEY || '',
+  ALGOLIA_INDEX_NAME: process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME || '',
   // 其它复杂配置
   // 原配置文件过长，且并非所有人都会用到，故此将配置拆分到/conf/目录下, 按需找到对应文件并修改即可
   ...require('./conf/comment.config'), // 评论插件
