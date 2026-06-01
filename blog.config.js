@@ -40,11 +40,11 @@ const BLOG = {
   HEO_HERO_CATEGORY_2: { title: '専門家', url: '/category/専門家' },
   HEO_MENU_SEARCH: true,
   // Algolia設定
-  ALGOLIA_APP_ID: process.env.NEXT_PUBLIC_ALGOLIA_APP_ID || '',
-  ALGOLIA_API_KEY: process.env.NEXT_PUBLIC_ALGOLIA_API_KEY || '',
-  ALGOLIA_INDEX_NAME: process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME || '',
-  ALGOLIA_ADMIN_APP_KEY: process.env.ALGOLIA_ADMIN_APP_KEY || '',
-  ENABLE_RSS: process.env.NEXT_PUBLIC_ENABLE_RSS || false,
+  // --- Algolia設定を直接書く（Vercelの環境変数は無視してOKになります） ---
+  ALGOLIA_APP_ID: 'IHXV2HGHS3', // スクリーンショットで見えたIDです
+  ALGOLIA_API_KEY: '72f8a1c340abfe7239ea4615d15f8058', // Search API Key
+  ALGOLIA_INDEX_NAME: 'notion_next',
+  ALGOLIA_ADMIN_APP_KEY: '70b4a739d2f6dd8dbcf8ca6df10ec7b9', // これが最重要！
 
   // 其它复杂配置
   ...require('./conf/comment.config'),
